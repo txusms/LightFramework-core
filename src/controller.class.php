@@ -82,7 +82,7 @@ abstract class Controller
      * @param string $data  HMTL to print
      * @param string $layer Template layer (index.layer.php by default)
      */
-    public function render($data, $layer="index")
+    public function render($data="", $layer="index")
     {
         $this->data['content'] = $data;
         $this->data['controller'] = $this;
