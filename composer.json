@@ -1,0 +1,27 @@
+{
+	"name": "light-framework/core",
+	"description": "LightFramework Core.",
+	"homepage": "https://github.com/arall/LightFramework-core",
+	"keywords": ["framework", "highlight"],
+    "license": "MIT",
+	"authors": [
+    	{
+            "name": "Gerard Arall",
+            "email": "gerard.arall@gmail.com"
+        }
+    ],
+	"autoload": {
+		"classmap": [
+			"src/",
+		]
+	},
+	"require": {
+		"phpmailer/phpmailer": "dev-master",
+		"jdorn/sql-formatter": "1.3.*@dev"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "*",
+		"phpunit/phpunit-selenium": "dev-master",
+		"phpunit/dbunit": "dev-master"
+	}
+}
