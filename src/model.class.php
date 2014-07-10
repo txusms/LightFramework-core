@@ -216,7 +216,7 @@ abstract class Model
             return false;
         }
         //Pre Insert
-        $this->preInsert();
+        $this->preInsert($array);
         $values1 = array();
         $values2 = array();
         $params = array();
