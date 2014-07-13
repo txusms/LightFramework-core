@@ -152,7 +152,29 @@ abstract class Model
     }
 
     /**
-     * Select By field.
+     * Select field By field.
+     *
+     * @param  string  $field       Field to return.
+     * @param  string  $searchField Field to search.
+     * @param  string  $value       Value to search.
+     * @param  integer $ignoreId    Id value to ignore.
+     * @return array
+     */
+    public static function getFieldBy($field, $searchField, $value="", $ignoreId=0)
+    {
+        $results = self::getBy($searchField, $value, $ignoreId);
+        if (count($results)) {
+            $return = array();
+            foreach ($results as $result) {
+                $return[] = $result->$field;
+            }
+
+            return $return;
+        }
+    }
+
+    /**
+     * Select Models By field.
      *
      * @param  string  $field    Field to search.
      * @param  string  $value    Value to search.
