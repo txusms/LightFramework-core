@@ -157,4 +157,21 @@ class Url
 
         return $url."/templates/".$template->name."/".$path;
     }
+
+    /**
+     * Redirect
+     *
+     * @param  string $url     Url to redirect
+     * @param  string $message Message
+     * @param  string $type    Message
+     * @return void
+     */
+    function redirect($url="", $message="", $type="")
+    {
+        if ($message) {
+            Registry::addMessage($message, $type);
+        }
+        header("Location: ".$url);
+        die();
+    }
 }

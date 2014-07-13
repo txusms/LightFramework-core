@@ -12,7 +12,10 @@
     ],
 	"autoload": {
 		"classmap": [
-			"src/"
+			"src/classes/"
+		],
+		"files": [
+			"src/functions.php"
 		]
 	},
 	"require": {
