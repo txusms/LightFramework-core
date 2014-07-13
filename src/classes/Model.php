@@ -152,6 +152,41 @@ abstract class Model
     }
 
     /**
+     * Select By field.
+     *
+     * @param  string  $field    Field to search.
+     * @param  string  $value    Value to search.
+     * @param  integer $ignoreId Id value to ignore.
+     * @return array   Objects.
+     */
+    public static function getBy($field, $value="", $ignoreId=0)
+    {
+        $className = get_called_class();
+        $model = new $className;
+        if ($model->validateVar($field, true)) {
+            $db = Registry::getDb();
+            //Query
+            $params = array();
+            $query = "SELECT * FROM `".$model->dbTable."` WHERE `".$field."` = :value ";
+            $params[":value"] = $value;
+            //Ignore Id
+            if ($ignoreId) {
+                $params[":ignoreId"] = $ignoreId;
+                $query .= " AND `".$model->idField."` != :ignoreId";
+            }
+            $rows = $db->query($query, $params);
+            if (count($rows)) {
+                $return = array();
+                foreach ($rows as $row) {
+                    $return[] = new $className($row);
+                }
+
+                return $return;
+            }
+        }
+    }
+
+    /**
      * Try to update the current object on Data Base
      *
      * @param  array $array Array of values to be setted (and replace the current object values).
@@ -280,10 +315,11 @@ abstract class Model
     /**
      * Validates if a variable is able to set
      *
-     * @param  string $varName Variable Name
+     * @param  string $varName     Variable Name
+     * @param  bool   $ignoreIsset Ignore if variable is set
      * @return bool
      */
-    private function validateVar($varName = "")
+    private function validateVar($varName = "", $ignoreIsset = false)
     {
         if ($varName == $this->idField) {
             return false;
@@ -294,7 +330,7 @@ abstract class Model
         if (in_array($varName, $this->reservedVarsChild)) {
             return false;
         }
-        if (isset($this->$varName)) {
+        if (isset($this->$varName) || $ignoreIsset) {
             return true;
         }
     }
