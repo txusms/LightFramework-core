@@ -203,8 +203,10 @@ class Registry
     public static function getUser()
     {
         if (self::$user == NULL || !self::$user->id) {
-            session_start();
-            self::$user = new User($_SESSION['userId']);
+            //Cookie
+            if (isset($_COOKIE['auth'])) {
+                self::$user = @current(User::getBy("token", $_COOKIE['auth']));
+            }
         }
 
         return self::$user;
