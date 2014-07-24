@@ -89,6 +89,8 @@ class Registry
 
     /**
      * Preserve the current debug (for ajax/redirections)
+     *
+     * @return void
      */
     public static function preserveDebug()
     {
@@ -98,7 +100,8 @@ class Registry
     /**
      * Save a Debug message
      *
-     * @param  mixed $message String/array/object to store
+     * @param mixed $message String/array/object to store
+     *
      * @return bool
      */
     public function addDebugMessage($message)
@@ -120,7 +123,8 @@ class Registry
     /**
      * Get the current Debug Log
      *
-     * @param  string   $key Log Key (variable)
+     * @param string $key Log Key (variable)
+     *
      * @return multiple Debug Log or Value of passed Log Key
      */
     public static function getDebug($key="")
@@ -136,7 +140,9 @@ class Registry
      * Set a Debug Log object
      *
      * @param string $key  Key
-     * @param string $data Value
+     * @param mixed  $data Value
+     *
+     * @return void
      */
     public static function setDebug($key, $data)
     {
@@ -170,10 +176,11 @@ class Registry
     /**
      * Get the current Language object
      *
-     * @param  string $lang Desired language
+     * @param string $lang Desired language
+     *
      * @return object Url
      */
-    public static function getLanguage($lang="")
+    public static function getLanguage($lang = "")
     {
         if (self::$language == NULL) {
             self::$language = new Language($lang);
@@ -184,6 +191,7 @@ class Registry
 
     /**
      * Get the current Data Base object
+     *
      * @return object Data Base
      */
     public static function getDb()
@@ -198,6 +206,7 @@ class Registry
 
     /**
      * Get the current User object
+     *
      * @return object User
      */
     public static function getUser()
@@ -215,6 +224,7 @@ class Registry
 
     /**
      * Get the current Config object
+     *
      * @return object Config
      */
     public static function getConfig()
@@ -229,6 +239,7 @@ class Registry
 
     /**
      * Get the current Template object
+     *
      * @return object Template
      */
     public static function getTemplate()
@@ -247,6 +258,8 @@ class Registry
      * @param integer $type    Type of message
      * @param string  $field   Related Form field
      * @param string  $url     Url to redirect
+     *
+     * @return bool
      */
     public static function addMessage($message="", $type=1, $field="", $url="")
     {
@@ -261,7 +274,8 @@ class Registry
     /**
      * Get the current session messages
      *
-     * @param  bool  $keep Don't delete the messages
+     * @param bool $keep Don't delete the messages
+     *
      * @return array List of Message objects
      */
     public static function getMessages($keep=false)

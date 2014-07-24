@@ -22,6 +22,11 @@ abstract class Controller
     }
 
     /**
+     * To be inherited
+     */
+    public function init() {}
+
+    /**
      * Get the [current] App Path
      *
      * @param  string $app
