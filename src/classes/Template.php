@@ -36,8 +36,12 @@ class Template
         //Check if file exists
         $filePath = $file.'.php';
         if (!file_exists($filePath)) {
-            //Show error
-            Error::render("File not found: ".$filePath);
+            if (!strstr($file, "error.layer")) {
+                //Show error
+                Error::render("File not found: ".$filePath);
+            } else {
+                die("Error layer not found: ".$filePath);
+            }
         }
 
         return self::loadTemplateFile($filePath, $vars);

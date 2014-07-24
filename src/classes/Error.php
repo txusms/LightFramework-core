@@ -21,6 +21,6 @@ class Error
         if($config->get("debug"))
             Template::render("error", array("content" => $message));
         else
-            redirect(Url::site());
+            Url::redirect();
     }
 }

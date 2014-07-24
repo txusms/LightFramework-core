@@ -168,6 +168,9 @@ class Url
      */
     function redirect($url="", $message="", $type="")
     {
+        if (!$url) {
+            $url = Url::site();
+        }
         if ($message) {
             Registry::addMessage($message, $type);
         }
