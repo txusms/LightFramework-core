@@ -152,6 +152,32 @@ abstract class Model
     }
 
     /**
+     * Get total By field.
+     *
+     * @param  string $field Field to search.
+     * @param  string $value Value to search.
+     * @return int.
+     */
+    public static function getCountBy($field, $value="")
+    {
+        $className = get_called_class();
+        $model = new $className;
+        if ($model->validateVar($field, true)) {
+            $db = Registry::getDb();
+            //Query
+            $params = array();
+            $query = "SELECT count(*) as total FROM `".$model->dbTable."` WHERE `".$field."` = :value ";
+            $params[":value"] = $value;
+            $rows = $db->query($query, $params);
+            if (count($rows)) {
+                return $rows[0]["total"];
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    /**
      * Select field By field.
      *
      * @param  string  $field       Field to return.
