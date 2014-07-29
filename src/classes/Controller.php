@@ -22,17 +22,12 @@ abstract class Controller
     }
 
     /**
-     * To be inherited
-     */
-    public function init() {}
-
-    /**
      * Get the [current] App Path
      *
      * @param  string $app
      * @return string
      */
-    public function getPath($app="")
+    final public function getPath($app="")
     {
         $config = Registry::getConfig();
         $url = Registry::getUrl();
@@ -48,7 +43,7 @@ abstract class Controller
      * @param string $name
      * @param mixed  $value
      */
-    public function setData($key, $data=null)
+    final public function setData($key, $data=null)
     {
         $this->data[$key] = $data;
     }
@@ -62,7 +57,7 @@ abstract class Controller
      * @param  string $app
      * @return string HTML view
      */
-    public function view($view, $app="")
+    final public function view($view, $app="")
     {
         $config = Registry::getConfig();
 
@@ -87,7 +82,7 @@ abstract class Controller
      * @param string $data  HMTL to print
      * @param string $layer Template layer (index.layer.php by default)
      */
-    public function render($data="", $layer="index")
+    final public function render($data="", $layer="index")
     {
         $this->data['content'] = $data;
         $this->data['controller'] = $this;
