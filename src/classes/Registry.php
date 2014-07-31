@@ -71,16 +71,24 @@ class Registry
         if (self::$mailer == NULL) {
             $config = Registry::getConfig();
             $mail = new PHPMailer();
-            $mail->isSMTP();
-            $mail->Host = $config->get("mailHost");;
-            $mail->Port = $config->get("mailPort");
-            $mail->SMTPAuth = true;
-            if ($config->get("mailSecure")) {
-                $mail->SMTPSecure = $config->get("mailSecure");
+            //Server setup?
+            if ($config->get("mailHost") && $config->get("mailPort") && $config->get("mailUsername") && $config->get("mailPassword")) {
+                $mail->isSMTP();
+                $mail->Host = $config->get("mailHost");
+                $mail->Port = $config->get("mailPort");
+                $mail->SMTPAuth = true;
+                if ($config->get("mailSecure")) {
+                    $mail->SMTPSecure = $config->get("mailSecure");
+                }
+                $mail->Username = $config->get("mailUsername");
+                $mail->Password = $config->get("mailPassword");
+            //Sendmail
+            } else {
+                $mail->isSendmail();
             }
-            $mail->Username = $config->get("mailUsername");
-            $mail->Password = $config->get("mailPassword");
-            $mail->setFrom($config->get("mailFromAdress"), $config->get("mailFromName"));
+            if ($config->get("mailFromAdress")) {
+                $mail->setFrom($config->get("mailFromAdress"), $config->get("mailFromName"));
+            }
             self::$mailer = $mail;
         }
 
