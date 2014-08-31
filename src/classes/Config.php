@@ -22,7 +22,7 @@ class Config
     public function __construct($vars=array())
     {
         if (is_array($vars)) {
-            $this->setByArray($vars);
+            $this->data = $vars;
         }
     }
 
@@ -45,21 +45,5 @@ class Config
     public function get($name)
     {
         return $this->data[$name];
-    }
-
-    /**
-     * Set all the values inside the array in self data array
-     *
-     * @param array $array
-     */
-    public function setByArray($array)
-    {
-        if (is_array($array)) {
-            if (count($array)) {
-                foreach ($array as $name=>$value) {
-                    $this->set($name,$value);
-                }
-            }
-        }
     }
 }
