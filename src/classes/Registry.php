@@ -271,7 +271,9 @@ class Registry
      */
     public static function addMessage($message="", $type=1, $field="", $url="")
     {
-        session_start();
+        if (php_sapi_name() != 'cli') {
+            session_start();
+        }
         $msg = new Message($message, $type, $field, $url);
         $_SESSION['messages'][] = $msg;
         self::$messages[] = $_SESSION['messages'];
@@ -288,7 +290,9 @@ class Registry
      */
     public static function getMessages($keep=false)
     {
-        session_start();
+        if (php_sapi_name() != 'cli') {
+            session_start();
+        }
         $messages = $_SESSION['messages'];
         self::$messages = $messages;
         if (!$keep) {
