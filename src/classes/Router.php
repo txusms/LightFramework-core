@@ -115,7 +115,9 @@ class Router
                 $url->router = $appName;
                 $url->app = $action;
                 $url->action = $url->vars[0] ? $url->vars[0] : "index";
-                @array_shift($url->vars);
+                if (!empty($url->vars)) {
+                    array_shift($url->vars);
+                }
                 Registry::setUrl($url);
                 //Route
                 self::route($appPath, $url->action);
