@@ -56,43 +56,34 @@ class Registry
     private static $debug = array();
 
     /**
-     * Current Mailer object
-     * @var object
-     */
-    private static $mailer = null;
-
-    /**
      * Returns the current Mailer
      *
      * @return object Mailer
      */
     public function getMailer()
     {
-        if (self::$mailer == NULL) {
-            $config = Registry::getConfig();
-            $mail = new PHPMailer();
-            //Server setup?
-            if ($config->get("mailHost") && $config->get("mailPort") && $config->get("mailUsername") && $config->get("mailPassword")) {
-                $mail->isSMTP();
-                $mail->Host = $config->get("mailHost");
-                $mail->Port = $config->get("mailPort");
-                $mail->SMTPAuth = true;
-                if ($config->get("mailSecure")) {
-                    $mail->SMTPSecure = $config->get("mailSecure");
-                }
-                $mail->Username = $config->get("mailUsername");
-                $mail->Password = $config->get("mailPassword");
-            //Sendmail
-            } else {
-                $mail->isSendmail();
+        $config = Registry::getConfig();
+        $mailer = new PHPMailer();
+        //Server setup?
+        if ($config->get("mailHost") && $config->get("mailPort") && $config->get("mailUsername") && $config->get("mailPassword")) {
+            $mailer->isSMTP();
+            $mailer->Host = $config->get("mailHost");
+            $mailer->Port = $config->get("mailPort");
+            $mailer->SMTPAuth = true;
+            if ($config->get("mailSecure")) {
+                $mailer->SMTPSecure = $config->get("mailSecure");
             }
-            if ($config->get("mailFromAdress")) {
-                $mail->setFrom($config->get("mailFromAdress"), $config->get("mailFromName"));
-            }
-            self::$mailer = $mail;
+            $mailer->Username = $config->get("mailUsername");
+            $mailer->Password = $config->get("mailPassword");
+        //Sendmail
+        } else {
+            $mailer->isSendmail();
+        }
+        if ($config->get("mailFromAdress")) {
+            $mailer->setFrom($config->get("mailFromAdress"), $config->get("mailFromName"));
         }
 
-        return self::$mailer;
+        return $mailer;
     }
 
     /**
