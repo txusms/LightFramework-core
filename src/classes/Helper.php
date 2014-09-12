@@ -20,10 +20,10 @@ class Helper
     /**
      * Returns a HTML formated Debug Message
      *
-     * @param  string $string Debug Message
-     * @return string HTML formated Message
+     * @param  string|array|object $string Debug Message
+     * @return string              HTML formated Message
      */
-    public function printDebugMessage($string="")
+    public function printDebugMessage($string = "")
     {
         if (is_array($string) || is_object($string)) {
             return "<pre>".Helper::sanitize(print_r($string, true))."</pre>";
@@ -56,7 +56,7 @@ class Helper
      * @param  string $date Non-human readable date
      * @return string Human readable date
      */
-    public function humanDate($date="")
+    public function humanDate($date = "")
     {
         if ($date && $date!="0000-00-00 00:00:00" && $date!="00:00:00" && $date!="0000-00-00") {
              if (strlen($date)>8) {
@@ -79,7 +79,7 @@ class Helper
      * @param  integer $precision Precision
      * @return string  Human readable size
      */
-    public function formatBytes($bytes, $precision=2)
+    public function formatBytes($bytes, $precision = 2)
     {
         $base = @log($bytes) / log(1024);
         $suffixes = array('B', 'KB', 'MB', 'GB', 'TB');

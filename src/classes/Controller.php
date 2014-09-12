@@ -27,7 +27,7 @@ abstract class Controller
      * @param  string $app
      * @return string
      */
-    final public function getPath($app="")
+    final public function getPath($app = "")
     {
         $config = Registry::getConfig();
         $url = Registry::getUrl();
@@ -43,7 +43,7 @@ abstract class Controller
      * @param string $name
      * @param mixed  $value
      */
-    final public function setData($key, $data=null)
+    final public function setData($key, $data = null)
     {
         $this->data[$key] = $data;
     }
@@ -57,14 +57,16 @@ abstract class Controller
      * @param  string $app
      * @return string HTML view
      */
-    final public function view($view, $app="")
+    final public function view($view, $app = "")
     {
         $config = Registry::getConfig();
 
         $template = Registry::getTemplate();
+
         //Including the controller as data, to enable modules/views inside other views
         $this->data['controller'] = $this;
         $tp = DIRECTORY_SEPARATOR.str_replace(".", DIRECTORY_SEPARATOR, $view).".view";
+
         //Template priority
         $file = $config->get("path").DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$template->name.$tp;
         if (!file_exists($file.".php")) {
@@ -82,7 +84,7 @@ abstract class Controller
      * @param string $data  HMTL to print
      * @param string $layer Template layer (index.layer.php by default)
      */
-    final public function render($data="", $layer="index")
+    final public function render($data = "", $layer = "index")
     {
         $this->data['content'] = $data;
         $this->data['controller'] = $this;
@@ -94,10 +96,11 @@ abstract class Controller
      *
      * @param array $data
      */
-    final public function ajax($data=array())
+    final public function ajax($data = array())
     {
         $config = Registry::getConfig();
         $messages = Registry::getMessages();
+
         //Fix preserve on redirections
         if (count($messages)) {
             foreach ($messages as $message) {
@@ -106,10 +109,13 @@ abstract class Controller
                 }
             }
         }
+
         //Custom Data
         $return['data'] = $data;
+
         //Messages
         $return['messages'] = $messages;
+
         //Debug messages
         if ($config->get("debug")) {
             $debug = Registry::getDebug();

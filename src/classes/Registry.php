@@ -11,31 +11,31 @@ class Registry
      * Current Url object
      * @var object
      */
-    private static $url = NULL;
+    private static $url = null;
 
     /**
      * Current Database object
      * @var object
      */
-    private static $db = NULL;
+    private static $db = null;
 
     /**
      * Current Config object
      * @var object
      */
-    private static $config = NULL;
+    private static $config = null;
 
     /**
      * Current User object
      * @var object
      */
-    private static $user = NULL;
+    private static $user = null;
 
     /**
      * Current Template object
      * @var object
      */
-    private static $template = NULL;
+    private static $template = null;
 
     /**
      * Current Messages array
@@ -47,7 +47,7 @@ class Registry
      * Current Language object
      * @var object
      */
-    private static $language = NULL;
+    private static $language = null;
 
     /**
      * Current Debug values
@@ -64,21 +64,22 @@ class Registry
     {
         $config = Registry::getConfig();
         $mailer = new PHPMailer();
+
         //Server setup?
         if ($config->get("mailHost") && $config->get("mailPort") && $config->get("mailUsername") && $config->get("mailPassword")) {
             $mailer->isSMTP();
             $mailer->Host = $config->get("mailHost");
             $mailer->Port = $config->get("mailPort");
             $mailer->SMTPAuth = true;
-            if ($config->get("mailSecure")) {
-                $mailer->SMTPSecure = $config->get("mailSecure");
-            }
+            $mailer->SMTPSecure = $config->get("mailSecure");
             $mailer->Username = $config->get("mailUsername");
             $mailer->Password = $config->get("mailPassword");
         //Sendmail
         } else {
             $mailer->isSendmail();
         }
+
+        //From adress
         if ($config->get("mailFromAdress")) {
             $mailer->setFrom($config->get("mailFromAdress"), $config->get("mailFromName"));
         }
@@ -126,7 +127,7 @@ class Registry
      *
      * @return multiple Debug Log or Value of passed Log Key
      */
-    public static function getDebug($key="")
+    public static function getDebug($key = "")
     {
         if ($key) {
             return self::$debug[$key];
@@ -155,7 +156,7 @@ class Registry
      */
     public static function getUrl()
     {
-        if (self::$url == NULL) {
+        if (self::$url == null) {
             self::$url = new Url();
         }
 
@@ -181,7 +182,7 @@ class Registry
      */
     public static function getLanguage($lang = "")
     {
-        if (self::$language == NULL) {
+        if (self::$language == null) {
             self::$language = new Language($lang);
         }
 
@@ -196,7 +197,7 @@ class Registry
     public static function getDb()
     {
         $config = self::getConfig();
-        if (self::$db == NULL) {
+        if (self::$db == null) {
             self::$db = new Database($config->get("dbHost"), $config->get("dbUser"), $config->get("dbPass"), $config->get("dbName"));
         }
 
@@ -210,7 +211,7 @@ class Registry
      */
     public static function getUser()
     {
-        if (self::$user == NULL || !self::$user->id) {
+        if (self::$user == null || !self::$user->id) {
             $config = Registry::getConfig();
             //Cookie
             if (isset($_COOKIE[$config->get("cookie")])) {
@@ -228,7 +229,7 @@ class Registry
      */
     public static function getConfig()
     {
-        if (self::$config == NULL) {
+        if (self::$config == null) {
             global $_config;
             self::$config = new Config($_config);
         }
@@ -243,7 +244,7 @@ class Registry
      */
     public static function getTemplate()
     {
-        if (self::$template == NULL) {
+        if (self::$template == null) {
             self::$template = new Template();
         }
 
@@ -260,7 +261,7 @@ class Registry
      *
      * @return bool
      */
-    public static function addMessage($message="", $type=1, $field="", $url="")
+    public static function addMessage($message = "", $type = 1, $field = "", $url = "")
     {
         if (php_sapi_name() != 'cli') {
             session_start();
@@ -279,13 +280,15 @@ class Registry
      *
      * @return array List of Message objects
      */
-    public static function getMessages($keep=false)
+    public static function getMessages($keep = false)
     {
         if (php_sapi_name() != 'cli') {
             session_start();
         }
         $messages = $_SESSION['messages'];
         self::$messages = $messages;
+
+        //Keep messages?
         if (!$keep) {
             self::$messages = array();
             $_SESSION['messages'] = array();

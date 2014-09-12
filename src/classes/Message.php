@@ -39,7 +39,7 @@ class Message
      * @param string $field
      * @param string $url
      */
-    public function __construct($message="", $type="notice", $field="", $url="")
+    public function __construct($message = "", $type = "notice", $field = "", $url = "")
     {
         $this->message = $message;
         $this->type = strtolower($type);

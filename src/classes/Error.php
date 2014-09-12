@@ -13,14 +13,16 @@ class Error
      * @param  string $message Error String to show
      * @return void
      */
-    public static function render($message="")
+    public static function render($message = "")
     {
         //Get the current Config
         $config = Registry::getConfig();
+
         //Debug Enabled?
-        if($config->get("debug"))
+        if ($config->get("debug")) {
             Template::render("error", array("content" => $message));
-        else
+        } else {
             Url::redirect();
+        }
     }
 }

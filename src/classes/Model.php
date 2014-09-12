@@ -47,18 +47,23 @@ abstract class Model
      * @param multiple $id     Id of the object on the Data Base Table or Array of values to set
      * @param string   $prefix Field prefix to use multiple objetcs (forms/queries)
      */
-    public function __construct($id="", $prefix="")
+    public function __construct($id = null, $prefix = "")
     {
         //Call the init
         $this->init();
+
         //Set the child class name
         $this->className = get_class($this);
+
         //Set the current Data Base Table name
         $this->dbTable = self::$dbTable;
+
         //Parent (self) reserved vars
         $this->reservedVars = self::$reservedVars;
+
         //Child reserved vars
         $this->reservedVarsChild = self::$reservedVarsChild;
+
         //Child id Field
         $this->idField = self::$idField;
         if (!$this->idField) {
@@ -213,6 +218,7 @@ abstract class Model
         $model = new $className;
         if ($model->validateVar($field, true)) {
             $db = Registry::getDb();
+
             //Query
             $params = array();
             $query = "SELECT * FROM `".$model->dbTable."` WHERE `".$field."` = :value ";
@@ -244,10 +250,12 @@ abstract class Model
     {
         $config = Registry::getConfig();
         $db = Registry::getDb();
+
         //Load Array
         if (is_array($array)) {
             self::loadVarsArray($array);
         }
+
         //Validate
         $err = $this->validateUpdate($array);
         if ($err) {
@@ -255,8 +263,10 @@ abstract class Model
         }
         //Pre Update
         $this->preUpdate($array);
+
         //Prepare SQL vars
         $idField = $this->idField;
+
         $set = array();
         $params = array();
         foreach (get_class_vars($this->className) as  $name=>$value) {
@@ -266,9 +276,11 @@ abstract class Model
             }
             $params[":id"] = $this->$idField;
         }
+
         //SQL
         $res = $db->query("UPDATE `".$this->dbTable."` SET ".implode(" , ",$set)." WHERE `".$this->idField."`=:id", $params);
         if ($res) {
+
             //Post Update
             $this->postUpdate($array);
 
@@ -289,21 +301,25 @@ abstract class Model
     {
         $config = Registry::getConfig();
         $db = Registry::getDb();
+
         //Load Array
         if (is_array($array)) {
             self::loadVarsArray($array);
         }
+
         //Validate
         $err = $this->validateInsert($array);
         if ($err) {
             return false;
         }
+
         //Pre Insert
         $this->preInsert($array);
         $values1 = array();
         $values2 = array();
         $params = array();
-         //Prepare SQL vars
+
+        //Prepare SQL vars
         foreach (get_class_vars($this->className) as $name=>$value) {
             if ($this->validateVar($name)) {
                 $values1[] = "`".$name."`";
@@ -311,11 +327,13 @@ abstract class Model
                 $params[":".$name] = $this->$name;
             }
         }
+
         //SQL
         $res = $db->query("INSERT INTO `".$this->dbTable."` (".implode(" , ",$values1).") VALUES (".implode(" , ",$values2).")", $params);
         if ($res) {
             $idField = $this->idField;
             $this->$idField = $db->lastInsertId();
+
             //Post Insert
             $this->postInsert($array);
 
@@ -335,13 +353,16 @@ abstract class Model
     {
         $db = Registry::getDb();
         $config = Registry::getConfig();
+
         //Validate
         $err = $this->validateDelete();
         if ($err) {
             return false;
         }
+
         //Pre Delete
         $this->preDelete($array);
+
         //Delete
         $idField = $this->idField;
         $res = $db->query("DELETE FROM `".$this->dbTable."` WHERE `".$this->idField."` = :id ",
@@ -350,6 +371,7 @@ abstract class Model
             )
         );
         if ($res) {
+
             //Post Insert
             $this->postDelete($array);
 

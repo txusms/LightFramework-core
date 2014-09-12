@@ -7,11 +7,12 @@
  * @param  boolean $return Return or print
  * @return string
  */
-function print_pre($array=array(), $return=false)
+function print_pre($array = array(), $return = false)
 {
     $out = "<pre>";
     $out .= print_r($array, true);
     $out .= "</pre>";
+
     if ($return) {
         return $out;
     } else {

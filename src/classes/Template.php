@@ -20,6 +20,7 @@ class Template
     {
         //Get the current Config
         $config = Registry::getConfig();
+
         //Set the template name
         $this->name = $config->get("template");
     }
@@ -73,7 +74,7 @@ class Template
      * @param string $layer Template layer (index.layer.php by default)
      * @param array  $vars  List of values to pass trought
      */
-    public static function render($layer="index", $vars=array())
+    public static function render($layer = "index", $vars = array())
     {
         $template = Registry::getTemplate();
         $config = Registry::getConfig();
@@ -84,13 +85,13 @@ class Template
     }
 
     /**
-     * Render a Email Template
+     * Render an Email Template
      * @param  string $view     Email View
      * @param  array  $vars     List of values to pass trought
      * @param  string $template Template to be used
      * @return string HTML
      */
-    public static function renderEmail($view, $vars=array(), $template="")
+    public static function renderEmail($view, $vars = array(), $template = "")
     {
         $config = Registry::getConfig();
         $originalTemplate = "";

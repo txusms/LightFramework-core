@@ -46,31 +46,38 @@ class Url
     }
 
     /**
-     * URL build
+     * Url builder
      *
-     * @param  string $uri URL URI
+     * @param  string $uri Url URI
      * @return void
      */
     public function build($uri)
     {
         //Get the current config
         $config = Registry::getConfig();
+
         //Cleaning url
         $url = $this->clean($uri);
+
         //Set Url
         $this->url = $url;
+
         //Set Default App
         $this->app = $config->get("defaultApp");
+
         //Set Default Action
         $this->action = "index";
+
         //URL contruction
         if ($url) {
+
             //Read Vars
             $vars = explode("/", $url);
             $this->app = $vars[0];
             if ($vars[1]) {
                 $this->action = $vars[1];
             }
+
             //GET Vars
             if (count($vars)>2) {
                 for ($i = 2; $i < count($vars); $i++) {
@@ -78,6 +85,7 @@ class Url
                 }
             }
         }
+
         //POST is mandatory
         $this->checkPost();
     }
@@ -89,12 +97,17 @@ class Url
      */
     private function checkPost()
     {
+        // Router
         if ($_POST['router']) {
             $this->router = $_POST['router'];
         }
+
+        // App
         if ($_POST['app']) {
             $this->app = $_POST['app'];
         }
+
+        // Action
         if ($_POST['action']) {
             $this->action = $_POST['action'];
         }
@@ -103,20 +116,23 @@ class Url
     /**
      * Cleans an URI
      *
-     * @param  string $uri URI
+     * @param  string $uri
      * @return string
      */
     private function clean($uri)
     {
         //Get the current config
         $config = Registry::getConfig();
+
         //Extra slashes
         $dir = $config->get("dir");
         if ($dir=="/") {
             $dir = "";
         }
-        //Read URL
+
+        //Read the Url
         $url = trim(str_replace("//", "/", str_replace($dir, "", $uri)), "/");
+
         //Exclude GET params
         if (strstr($url, "?")) {
             $url = substr($url, 0, strpos($url, "?"));
@@ -145,7 +161,8 @@ class Url
     /**
      * Gets the curren template Url
      *
-     * @param  string $path Extra Url
+     * @param  string $path
+     * @param  string $templateName
      * @return string Url
      */
     public static function template($path = "", $templateName = null)
@@ -162,21 +179,25 @@ class Url
     }
 
     /**
-     * Redirect
+     * Url redirection
      *
      * @param  string $url     Url to redirect
-     * @param  string $message Message
-     * @param  string $type    Message
+     * @param  string $message Message text
+     * @param  string $type    Message type
      * @return void
      */
     function redirect($url = "", $message = "", $type = "")
     {
+        // Site as default
         if (!$url) {
             $url = Url::site();
         }
+
+        // Add a message
         if ($message) {
             Registry::addMessage($message, $type);
         }
+
         header("Location: ".$url);
         die();
     }

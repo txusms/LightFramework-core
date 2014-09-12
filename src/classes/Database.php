@@ -40,7 +40,7 @@ class Database
      *
      * @return bool
      */
-    public function __construct($host="localhost", $user="", $pass="", $database="", $charset="")
+    public function __construct($host = "localhost", $user = "", $pass = "", $database  "", $charset = "")
     {
         $dsn = "mysql:host=".$host.";dbname=".$database.";";
         if ($charset) {
@@ -56,26 +56,32 @@ class Database
         }
     }
 
-    public function query($query, $params=null, $fetchmode=PDO::FETCH_ASSOC)
+    public function query($query, $params = null, $fetchmode = PDO::FETCH_ASSOC)
     {
         $result = NULL;
         $this->error = null;
         $config = Registry::getConfig();
+
         //Debug
         if ($config->get("debug")) {
+
             //Save the previous stored time
             $sqlTime = Registry::getDebug("sqlTime");
+
             //Save the previous queries
             $stored = Registry::getDebug("queries");
+
             //Current Query starting time
             $msc = microtime(true);
         }
         try {
+
             //Prepare the query
             $this->prepared = $this->pdo->prepare($query);
+
             //Bind Params
             if (count($params)) {
-                foreach ($params as $var=>&$value) {
+                foreach ($params as $var => &$value) {
                     //Bind
                     $this->prepared->bindParam($var, $value);
                     //Debug
@@ -85,12 +91,13 @@ class Database
                     }
                 }
             }
+
             //Execute the statment
             $this->prepared->execute();
             $statement = strtolower(substr($query, 0 , 6));
-            if ($statement==='select') {
+            if ($statement === 'select') {
                 $result =  $this->prepared->fetchAll($fetchmode);
-            } elseif ($statement==='insert' ||  $statement==='update' || $statement==='delete') {
+            } elseif ($statement === 'insert' ||  $statement === 'update' || $statement === 'delete') {
                 $result = $this->prepared->rowCount();
             } else {
                 $result = NULL;
@@ -98,8 +105,10 @@ class Database
         } catch (PDOException $e) {
             $this->error = $e->getMessage();
         }
+
         //Debug
         if ($config->get("debug")) {
+
             //Error?
             if ($this->error) {
                 Registry::setDebug("sqlError", true);
@@ -111,8 +120,10 @@ class Database
                 $trace = ob_get_contents();
                 ob_end_clean();
             }
+
             //Current Query total execution time
             $msc = round(((microtime(true)-$msc)*1000), 2);
+
             //Save info as debug log
             $stored[] = array(
                 "query" => $query,
@@ -122,6 +133,7 @@ class Database
                 "trace" => $trace,
             );
             Registry::setDebug("queries", $stored);
+
             //Increase previous stored time
             Registry::setDebug("sqlTime", (int) $sqlTime += $msc);
         }
