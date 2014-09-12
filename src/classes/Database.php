@@ -40,7 +40,7 @@ class Database
      *
      * @return bool
      */
-    public function __construct($host = "localhost", $user = "", $pass = "", $database  "", $charset = "")
+    public function __construct($host = "localhost", $user = "", $pass = "", $database = "", $charset = "")
     {
         $dsn = "mysql:host=".$host.";dbname=".$database.";";
         if ($charset) {
