@@ -133,7 +133,7 @@ class Url
      * @param  string $path Extra Url
      * @return string Url
      */
-    public static function site($path="")
+    public static function site($path = "")
     {
         $config = Registry::getConfig();
         $url = trim($config->get('url'), "/");
@@ -148,14 +148,17 @@ class Url
      * @param  string $path Extra Url
      * @return string Url
      */
-    public static function template($path="")
+    public static function template($path = "", $templateName = null)
     {
         $config = Registry::getConfig();
-        $template = Registry::getTemplate();
+        if (!$templateName) {
+            $template = Registry::getTemplate();
+            $templateName = $template->name;
+        }
         $url = trim($config->get('url'), "/");
         $path = trim($path, "/");
 
-        return $url."/templates/".$template->name."/".$path;
+        return $url."/templates/".$templateName."/".$path;
     }
 
     /**
@@ -166,7 +169,7 @@ class Url
      * @param  string $type    Message
      * @return void
      */
-    function redirect($url="", $message="", $type="")
+    function redirect($url = "", $message = "", $type = "")
     {
         if (!$url) {
             $url = Url::site();
