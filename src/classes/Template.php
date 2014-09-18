@@ -81,7 +81,13 @@ class Template
         $path = $config->get("path").DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$template->name.
             DIRECTORY_SEPARATOR.str_replace(".", DIRECTORY_SEPARATOR, $layer).".layer";
         $html = self::loadTemplate($path, $vars);
-        echo $html;
+
+        //Minify?
+        if ($config->get("minify")) {
+            echo self::minify($html);
+        } else {
+            echo $html;
+        }
     }
 
     /**
@@ -107,5 +113,25 @@ class Template
         }
 
         return utf8_decode($render);
+    }
+
+    /**
+     * Minifies HTML code
+     * @param  string $content
+     * @return string
+     */
+    public static function minify($content)
+    {
+        return preg_replace(
+            array(
+                '/ {2,}/',
+                '/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'
+            ),
+            array(
+                ' ',
+                ''
+            ),
+            $content
+        );
     }
 }
