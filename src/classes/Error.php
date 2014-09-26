@@ -18,6 +18,11 @@ class Error
         //Get the current Config
         $config = Registry::getConfig();
 
+        //CLI error
+        if (php_sapi_name() == 'cli') {
+            die($message."\n");
+        }
+
         //Debug Enabled?
         if ($config->get("debug")) {
             Template::render("error", array("content" => $message));
