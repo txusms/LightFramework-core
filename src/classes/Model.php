@@ -349,13 +349,13 @@ abstract class Model
      *
      * @return bool
      */
-    public function delete()
+    public function delete($array = array())
     {
         $db = Registry::getDb();
         $config = Registry::getConfig();
 
         //Validate
-        $err = $this->validateDelete();
+        $err = $this->validateDelete($array);
         if ($err) {
             return false;
         }

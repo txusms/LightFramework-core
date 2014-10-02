@@ -190,9 +190,16 @@ class Registry
     {
         if (self::$user == null || !self::$user->id) {
             $config = Registry::getConfig();
+            $user = null;
+            //Session
+            if (isset($_SESSION["userId"])) {
+                $user = new User($_SESSION["userId"]);
             //Cookie
-            if (isset($_COOKIE[$config->get("cookie")])) {
-                self::$user = @current(User::getBy("token", $_COOKIE[$config->get("cookie")]));
+            } elseif (isset($_COOKIE[$config->get("cookie")])) {
+                $user = @current(User::getBy("token", $_COOKIE[$config->get("cookie")]));
+            }
+            if ($user->id) {
+                self::$user = $user;
             }
         }
 

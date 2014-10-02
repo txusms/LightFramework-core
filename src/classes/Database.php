@@ -29,6 +29,13 @@ class Database
     public $error;
 
     /**
+     * Current printable query
+     *
+     * @var string
+     */
+    private $query;
+
+    /**
      * Constructor
      * Tries to connecto to DB.
      *
@@ -84,13 +91,14 @@ class Database
                 foreach ($params as $var => &$value) {
                     //Bind
                     $this->prepared->bindParam($var, $value);
-                    //Debug
-                    if ($config->get("debug")) {
-                        //Debug Printable
-                        $query = str_replace($var, "'".$value."'", $query);
-                    }
+
+                    //Printable query
+                    $query = str_replace($var, "'".$value."'", $query);
                 }
             }
+
+            //Printable query
+            $this->query = $query;
 
             //Execute the statment
             $this->prepared->execute();
@@ -126,7 +134,7 @@ class Database
 
             //Save info as debug log
             $stored[] = array(
-                "query" => $query,
+                "query" => $this->query,
                 "time" => $msc,
                 "result" => $this->result,
                 "error" => $error,
@@ -144,5 +152,10 @@ class Database
     public function lastInsertId()
     {
         return $this->pdo->lastInsertId();
+    }
+
+    public function getQuery()
+    {
+        return $this->query;
     }
 }
