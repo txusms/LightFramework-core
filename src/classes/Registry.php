@@ -192,6 +192,7 @@ class Registry
             $config = Registry::getConfig();
             $user = null;
             //Session
+            session_start();
             if (isset($_SESSION["userId"])) {
                 $user = new User($_SESSION["userId"]);
             //Cookie
