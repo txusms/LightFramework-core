@@ -67,8 +67,6 @@ class Registry
     {
         $config = Registry::getConfig();
         $mailer = new PHPMailer();
-        $mailer->CharSet = 'UTF-8';
-        $mailer->Encoding = 'base64';
 
         //Server setup?
         if ($config->get("mailHost") && $config->get("mailPort") && $config->get("mailUsername") && $config->get("mailPassword")) {
