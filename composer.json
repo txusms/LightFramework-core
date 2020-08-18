@@ -1,14 +1,18 @@
 {
-	"name": "light-framework/core",
+	"name": "light-framework2/core",
 	"description": "LightFramework Core.",
-	"homepage": "https://github.com/arall/LightFramework-core",
+	"homepage": "https://github.com/txusms/LightFramework-core",
 	"keywords": ["framework", "highlight"],
     "license": "MIT",
 	"authors": [
     	{
             "name": "Gerard Arall",
             "email": "gerard.arall@gmail.com"
-        }
+        },
+		{
+			"name": "Jesús Marqués",
+			"email": "j.marquessales@gmail.com"
+		}
     ],
 	"autoload": {
 		"classmap": [
