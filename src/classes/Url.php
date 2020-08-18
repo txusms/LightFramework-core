@@ -68,7 +68,7 @@ class Url
         //Set Default Action
         $this->action = "index";
 
-        //URL contruction
+        //URL construction
         if ($url) {
 
             //Read Vars
@@ -110,6 +110,9 @@ class Url
         // Action
         if ($_POST['action']) {
             $this->action = $_POST['action'];
+        }
+        if ($_GET['action']) {
+            $this->action = $_GET['action'];
         }
     }
 

@@ -1,5 +1,8 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 /**
  * Registry Class
  *
@@ -60,10 +63,12 @@ class Registry
      *
      * @return object Mailer
      */
-    public function getMailer()
+    public static function getMailer()
     {
         $config = Registry::getConfig();
         $mailer = new PHPMailer();
+        $mailer->CharSet = 'UTF-8';
+        $mailer->Encoding = 'base64';
 
         //Server setup?
         if ($config->get("mailHost") && $config->get("mailPort") && $config->get("mailUsername") && $config->get("mailPassword")) {
