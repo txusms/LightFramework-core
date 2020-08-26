@@ -73,7 +73,7 @@ class Language
      * @param  string $string String to translate
      * @return string Translated string
      */
-    public function translate($string="")
+    public static function translate($string="")
     {
         $res = self::$strings[strtoupper($string)];
         if (!$res) {
