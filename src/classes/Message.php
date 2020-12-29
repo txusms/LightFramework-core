@@ -5,8 +5,7 @@
  *
  * @package LightFramework\Core
  */
-class Message
-{
+class Message {
     /**
      * Message itself
      * @var string
@@ -39,8 +38,7 @@ class Message
      * @param string $field
      * @param string $url
      */
-    public function __construct($message = "", $type = "notice", $field = "", $url = "")
-    {
+    public function __construct($message = "", $type = "notice", $field = "", $url = "") {
         $this->message = $message;
         $this->type = strtolower($type);
         $this->field = $field;
@@ -52,9 +50,8 @@ class Message
      *
      * @return string CSS Class name
      */
-    public function getAlertType()
-    {
-        if ($this->type=="error") {
+    public function getAlertType() {
+        if ($this->type == "error") {
             return "danger";
         } else {
             return $this->type;

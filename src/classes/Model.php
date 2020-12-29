@@ -5,8 +5,7 @@
  *
  * @package LightFramework\Core
  */
-abstract class Model
-{
+abstract class Model {
     /**
      * Child class name
      * @var string
@@ -40,15 +39,15 @@ abstract class Model
     /**
      * Initial Funcion (to be inherited)
      */
-    public function init() {}
+    public function init() {
+    }
 
     /**
      * Contructor.
-     * @param multiple $id     Id of the object on the Data Base Table or Array of values to set
-     * @param string   $prefix Field prefix to use multiple objetcs (forms/queries)
+     * @param multiple $id Id of the object on the Data Base Table or Array of values to set
+     * @param string $prefix Field prefix to use multiple objetcs (forms/queries)
      */
-    public function __construct($id = null, $prefix = "")
-    {
+    public function __construct($id = null, $prefix = "") {
         //Call the init
         $this->init();
 
@@ -73,17 +72,17 @@ abstract class Model
             //Array of values to be setted
             if (is_array($id)) {
                 $this->loadVarsArray($id, $prefix);
-            //Id
+                //Id
             } else {
                 $db = Registry::getDb();
-                $rows = $db->query("SELECT * FROM `".$this->dbTable."` WHERE `".$this->idField."` = :id ",
+                $rows = $db->query("SELECT * FROM `" . $this->dbTable . "` WHERE `" . $this->idField . "` = :id ",
                     array(
                         ":id" => $id
                     )
                 );
                 if (count($rows)) {
                     $vars = array_keys(get_class_vars($this->className));
-                    foreach ($rows[0] as $name=>$value) {
+                    foreach ($rows[0] as $name => $value) {
                         if (in_array($name, $vars)) {
                             $this->$name = $value;
                         }
@@ -96,61 +95,75 @@ abstract class Model
     /**
      * Validates DB update Insert (to be inherited)
      */
-    public function validateInsert() {}
+    public function validateInsert() {
+    }
+
     /**
      * Runs before the DB Insert (to be inherited)
      */
-    public function preInsert() {}
+    public function preInsert() {
+    }
+
     /**
      * Runs after the DB Insert (to be inherited)
      */
-    public function postInsert() {}
+    public function postInsert() {
+    }
 
     /**
      * Validates DB update function (to be inherited)
      */
-    public function validateUpdate() {}
+    public function validateUpdate() {
+    }
+
     /**
      * Runs before the DB Update (to be inherited)
      */
-    public function preUpdate() {}
+    public function preUpdate() {
+    }
+
     /**
      * Runs after the DB Update (to be inherited)
      */
-    public function postUpdate() {}
+    public function postUpdate() {
+    }
 
     /**
      * Runs after the DB Delete (to be inherited)
      */
-    public function validateDelete() {}
+    public function validateDelete() {
+    }
+
     /**
      * Runs after the DB Delete (to be inherited)
      */
-    public function preDelete() {}
+    public function preDelete() {
+    }
+
     /**
      * Runs after the DB Delete (to be inherited)
      */
-    public function postDelete() {}
+    public function postDelete() {
+    }
 
     /**
      * Set an array of values to current object (if the var exists on current object)
      *
-     * @param array  $array  Array of values
+     * @param array $array Array of values
      * @param string $prefix Prefix for the field (Optional).
      */
-    public function loadVarsArray($array, $prefix="")
-    {
+    public function loadVarsArray($array, $prefix = "") {
         $vars = get_class_vars($this->className);
-        foreach ($vars as  $name=>$value) {
-            if(in_array($name, self::$reservedVars)) continue;
+        foreach ($vars as $name => $value) {
+            if (in_array($name, self::$reservedVars)) continue;
             if (!$prefix) {
                 if (isset($array[$name])) {
                     $this->$name = ($array[$name]);
                 }
             } else {
                 //SQL Joins or Multiple object forms (prefix_field)
-                if (isset($array[$prefix."_".$name])) {
-                    $this->$name = ($array[$prefix."_".$name]);
+                if (isset($array[$prefix . "_" . $name])) {
+                    $this->$name = ($array[$prefix . "_" . $name]);
                 }
             }
         }
@@ -159,19 +172,18 @@ abstract class Model
     /**
      * Get total By field.
      *
-     * @param  string $field Field to search.
-     * @param  string $value Value to search.
+     * @param string $field Field to search.
+     * @param string $value Value to search.
      * @return int.
      */
-    public static function getCountBy($field, $value="")
-    {
+    public static function getCountBy($field, $value = "") {
         $className = get_called_class();
         $model = new $className;
         if ($model->validateVar($field, true)) {
             $db = Registry::getDb();
             //Query
             $params = array();
-            $query = "SELECT count(*) as total FROM `".$model->dbTable."` WHERE `".$field."` = :value ";
+            $query = "SELECT count(*) as total FROM `" . $model->dbTable . "` WHERE `" . $field . "` = :value ";
             $params[":value"] = $value;
             $rows = $db->query($query, $params);
             if (count($rows)) {
@@ -185,14 +197,13 @@ abstract class Model
     /**
      * Select field By field.
      *
-     * @param  string  $field       Field to return.
-     * @param  string  $searchField Field to search.
-     * @param  string  $value       Value to search.
-     * @param  integer $ignoreId    Id value to ignore.
+     * @param string $field Field to return.
+     * @param string $searchField Field to search.
+     * @param string $value Value to search.
+     * @param integer $ignoreId Id value to ignore.
      * @return array
      */
-    public static function getFieldBy($field, $searchField, $value="", $ignoreId=0)
-    {
+    public static function getFieldBy($field, $searchField, $value = "", $ignoreId = 0) {
         $results = self::getBy($searchField, $value, $ignoreId);
         if (count($results)) {
             $return = array();
@@ -207,13 +218,12 @@ abstract class Model
     /**
      * Select Models By field.
      *
-     * @param  string  $field    Field to search.
-     * @param  string  $value    Value to search.
-     * @param  integer $ignoreId Id value to ignore.
+     * @param string $field Field to search.
+     * @param string $value Value to search.
+     * @param integer $ignoreId Id value to ignore.
      * @return array   Objects.
      */
-    public static function getBy($field, $value="", $ignoreId=0)
-    {
+    public static function getBy($field, $value = "", $ignoreId = 0) {
         $className = get_called_class();
         $model = new $className;
         if ($model->validateVar($field, true)) {
@@ -221,12 +231,12 @@ abstract class Model
 
             //Query
             $params = array();
-            $query = "SELECT * FROM `".$model->dbTable."` WHERE `".$field."` = :value ";
+            $query = "SELECT * FROM `" . $model->dbTable . "` WHERE `" . $field . "` = :value ";
             $params[":value"] = $value;
             //Ignore Id
             if ($ignoreId) {
                 $params[":ignoreId"] = $ignoreId;
-                $query .= " AND `".$model->idField."` != :ignoreId";
+                $query .= " AND `" . $model->idField . "` != :ignoreId";
             }
             $rows = $db->query($query, $params);
             if (count($rows)) {
@@ -243,11 +253,10 @@ abstract class Model
     /**
      * Try to update the current object on Data Base
      *
-     * @param  array $array Array of values to be setted (and replace the current object values).
+     * @param array $array Array of values to be setted (and replace the current object values).
      * @return bool
      */
-    public function update($array = array())
-    {
+    public function update($array = array()) {
         $config = Registry::getConfig();
         $db = Registry::getDb();
 
@@ -269,16 +278,16 @@ abstract class Model
 
         $set = array();
         $params = array();
-        foreach (get_class_vars($this->className) as  $name=>$value) {
+        foreach (get_class_vars($this->className) as $name => $value) {
             if ($this->validateVar($name)) {
-                $set[] = "`".$name."`"." = :".$name;
-                $params[":".$name] = ($this->$name);
+                $set[] = "`" . $name . "`" . " = :" . $name;
+                $params[":" . $name] = ($this->$name);
             }
             $params[":id"] = $this->$idField;
         }
 
         //SQL
-        $res = $db->query("UPDATE `".$this->dbTable."` SET ".implode(" , ",$set)." WHERE `".$this->idField."`=:id", $params);
+        $res = $db->query("UPDATE `" . $this->dbTable . "` SET " . implode(" , ", $set) . " WHERE `" . $this->idField . "`=:id", $params);
         if ($res) {
 
             //Post Update
@@ -286,7 +295,7 @@ abstract class Model
 
             return true;
         } else {
-            if($config->get("debug"))
+            if ($config->get("debug"))
                 Registry::addMessage($db->error, "error");
         }
     }
@@ -294,11 +303,10 @@ abstract class Model
     /**
      * Try to insert the current object on Data Base
      *
-     * @param  array $array Array of values to be setted (and replace the current object values).
+     * @param array $array Array of values to be setted (and replace the current object values).
      * @return bool
      */
-    public function insert($array = array())
-    {
+    public function insert($array = array()) {
         $config = Registry::getConfig();
         $db = Registry::getDb();
 
@@ -320,16 +328,16 @@ abstract class Model
         $params = array();
 
         //Prepare SQL vars
-        foreach (get_class_vars($this->className) as $name=>$value) {
+        foreach (get_class_vars($this->className) as $name => $value) {
             if ($this->validateVar($name)) {
-                $values1[] = "`".$name."`";
-                $values2[] = ":".$name;
-                $params[":".$name] = $this->$name;
+                $values1[] = "`" . $name . "`";
+                $values2[] = ":" . $name;
+                $params[":" . $name] = $this->$name;
             }
         }
 
         //SQL
-        $res = $db->query("INSERT INTO `".$this->dbTable."` (".implode(" , ",$values1).") VALUES (".implode(" , ",$values2).")", $params);
+        $res = $db->query("INSERT INTO `" . $this->dbTable . "` (" . implode(" , ", $values1) . ") VALUES (" . implode(" , ", $values2) . ")", $params);
         if ($res) {
             $idField = $this->idField;
             $this->$idField = $db->lastInsertId();
@@ -339,7 +347,7 @@ abstract class Model
 
             return true;
         } else {
-            if($config->get("debug"))
+            if ($config->get("debug"))
                 Registry::addMessage($db->error, "error");
         }
     }
@@ -349,8 +357,7 @@ abstract class Model
      *
      * @return bool
      */
-    public function delete($array = array())
-    {
+    public function delete($array = array()) {
         $db = Registry::getDb();
         $config = Registry::getConfig();
 
@@ -365,7 +372,7 @@ abstract class Model
 
         //Delete
         $idField = $this->idField;
-        $res = $db->query("DELETE FROM `".$this->dbTable."` WHERE `".$this->idField."` = :id ",
+        $res = $db->query("DELETE FROM `" . $this->dbTable . "` WHERE `" . $this->idField . "` = :id ",
             array(
                 ":id" => $this->$idField
             )
@@ -377,7 +384,7 @@ abstract class Model
 
             return true;
         } else {
-            if($config->get("debug"))
+            if ($config->get("debug"))
                 Registry::addMessage($db->error, "error");
         }
     }
@@ -385,16 +392,15 @@ abstract class Model
     /**
      * Validates if a variable is able to set
      *
-     * @param  string $varName     Variable Name
-     * @param  bool   $ignoreIsset Ignore if variable is set
+     * @param string $varName Variable Name
+     * @param bool $ignoreIsset Ignore if variable is set
      * @return bool
      */
-    private function validateVar($varName = "", $ignoreIsset = false)
-    {
+    private function validateVar($varName = "", $ignoreIsset = false) {
         if ($varName == $this->idField) {
             return false;
         }
-        if (in_array($varName,$this->reservedVars)) {
+        if (in_array($varName, $this->reservedVars)) {
             return false;
         }
         if (in_array($varName, $this->reservedVarsChild)) {

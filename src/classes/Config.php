@@ -5,8 +5,7 @@
  *
  * @package LightFramework\Core
  */
-class Config
-{
+class Config {
     /**
      * Array of stored values
      *
@@ -19,8 +18,7 @@ class Config
      *
      * @param array $vars
      */
-    public function __construct($vars=array())
-    {
+    public function __construct($vars = array()) {
         if (is_array($vars)) {
             $this->data = $vars;
         }
@@ -30,10 +28,9 @@ class Config
      * Set a value into self data array
      *
      * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
-    public function set($name, $value)
-    {
+    public function set($name, $value) {
         $this->data[$name] = $value;
     }
 
@@ -42,8 +39,7 @@ class Config
      *
      * @param mixed $name
      */
-    public function get($name)
-    {
+    public function get($name) {
         return $this->data[$name];
     }
 }

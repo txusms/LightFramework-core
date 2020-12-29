@@ -5,8 +5,7 @@
  *
  * @package LightFramework\Core
  */
-class Url
-{
+class Url {
     /**
      * Current Url
      * @var string
@@ -40,19 +39,17 @@ class Url
     /**
      * Contructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->build($_SERVER['REQUEST_URI']);
     }
 
     /**
      * Url builder
      *
-     * @param  string $uri Url URI
+     * @param string $uri Url URI
      * @return void
      */
-    public function build($uri)
-    {
+    public function build($uri) {
         //Get the current config
         $config = Registry::getConfig();
 
@@ -79,9 +76,9 @@ class Url
             }
 
             //GET Vars
-            if (count($vars)>2) {
+            if (count($vars) > 2) {
                 for ($i = 2; $i < count($vars); $i++) {
-                    $this->vars[$i-2] = $vars[$i];
+                    $this->vars[$i - 2] = $vars[$i];
                 }
             }
         }
@@ -95,8 +92,7 @@ class Url
      *
      * @return void
      */
-    private function checkPost()
-    {
+    private function checkPost() {
         // Router
         if ($_POST['router']) {
             $this->router = $_POST['router'];
@@ -119,17 +115,16 @@ class Url
     /**
      * Cleans an URI
      *
-     * @param  string $uri
+     * @param string $uri
      * @return string
      */
-    private function clean($uri)
-    {
+    private function clean($uri) {
         //Get the current config
         $config = Registry::getConfig();
 
         //Extra slashes
         $dir = $config->get("dir");
-        if ($dir=="/") {
+        if ($dir == "/") {
             $dir = "";
         }
 
@@ -149,27 +144,25 @@ class Url
     /**
      * Gets the full site Url
      *
-     * @param  string $path Extra Url
+     * @param string $path Extra Url
      * @return string Url
      */
-    public static function site($path = "")
-    {
+    public static function site($path = "") {
         $config = Registry::getConfig();
         $url = trim($config->get('url'), "/");
         $path = trim($path, "/");
 
-        return $url."/".$path;
+        return $url . "/" . $path;
     }
 
     /**
      * Gets the curren template Url
      *
-     * @param  string $path
-     * @param  string $templateName
+     * @param string $path
+     * @param string $templateName
      * @return string Url
      */
-    public static function template($path = "", $templateName = null)
-    {
+    public static function template($path = "", $templateName = null) {
         $config = Registry::getConfig();
         if (!$templateName) {
             $template = Registry::getTemplate();
@@ -178,19 +171,18 @@ class Url
         $url = trim($config->get('url'), "/");
         $path = trim($path, "/");
 
-        return $url."/templates/".$templateName."/".$path;
+        return $url . "/templates/" . $templateName . "/" . $path;
     }
 
     /**
      * Url redirection
      *
-     * @param  string $url     Url to redirect
-     * @param  string $message Message text
-     * @param  string $type    Message type
+     * @param string $url Url to redirect
+     * @param string $message Message text
+     * @param string $type Message type
      * @return void
      */
-    function redirect($url = "", $message = "", $type = "")
-    {
+    function redirect($url = "", $message = "", $type = "") {
         // Site as default
         if (!$url) {
             $url = Url::site();
@@ -201,7 +193,7 @@ class Url
             Registry::addMessage($message, $type);
         }
 
-        header("Location: ".$url);
+        header("Location: " . $url);
         die();
     }
 }

@@ -5,8 +5,7 @@
  *
  * @package LightFramework\Core
  */
-abstract class Controller
-{
+abstract class Controller {
     /**
      * Stored data to pass throught controller / views
      * @var array
@@ -16,62 +15,58 @@ abstract class Controller
     /**
      * Default constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->init();
     }
 
     /**
      * Get the [current] App Path
      *
-     * @param  string $app
+     * @param string $app
      * @return string
      */
-    final public function getPath($app = "")
-    {
+    final public function getPath($app = "") {
         $config = Registry::getConfig();
         $url = Registry::getUrl();
-        if(!$app)
+        if (!$app)
             $app = $url->app;
 
-        return $config->get("path").DIRECTORY_SEPARATOR."apps".DIRECTORY_SEPARATOR.$url->router.DIRECTORY_SEPARATOR.$app.DIRECTORY_SEPARATOR;
+        return $config->get("path") . DIRECTORY_SEPARATOR . "apps" . DIRECTORY_SEPARATOR . $url->router . DIRECTORY_SEPARATOR . $app . DIRECTORY_SEPARATOR;
     }
 
     /**
      * Set a value into self data array
      *
      * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
-    final public function setData($key, $data = null)
-    {
+    final public function setData($key, $data = null) {
         $this->data[$key] = $data;
     }
 
     /**
      * Loads a view of current App (or the one passed by param)
      *
+     * @param string $view Name of the desired view and its folder
+     * @param string $app
+     * @return string HTML view
      * @example view("views.register", "login"); This loads the /apps/login/views/register.view.php file
      *
-     * @param  string $view Name of the desired view and its folder
-     * @param  string $app
-     * @return string HTML view
      */
-    final public function view($view, $app = "")
-    {
+    final public function view($view, $app = "") {
         $config = Registry::getConfig();
 
         $template = Registry::getTemplate();
 
         //Including the controller as data, to enable modules/views inside other views
         $this->data['controller'] = $this;
-        $tp = DIRECTORY_SEPARATOR.str_replace(".", DIRECTORY_SEPARATOR, $view).".view";
+        $tp = DIRECTORY_SEPARATOR . str_replace(".", DIRECTORY_SEPARATOR, $view) . ".view";
 
         //Template priority
-        $file = $config->get("path").DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$template->name.$tp;
-        if (!file_exists($file.".php")) {
+        $file = $config->get("path") . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR . $template->name . $tp;
+        if (!file_exists($file . ".php")) {
             $path = $this->getPath($app);
-            $file = $path.$tp;
+            $file = $path . $tp;
         }
         $html = $template->loadTemplate($file, $this->data);
 
@@ -81,11 +76,10 @@ abstract class Controller
     /**
      * Prints the HTML string passed by param on the current Template
      *
-     * @param string $data  HMTL to print
+     * @param string $data HMTL to print
      * @param string $layer Template layer (index.layer.php by default)
      */
-    final public function render($data = "", $layer = "index")
-    {
+    final public function render($data = "", $layer = "index") {
         $this->data['content'] = $data;
         $this->data['controller'] = $this;
         Template::render($layer, $this->data);
@@ -96,8 +90,7 @@ abstract class Controller
      *
      * @param array $data
      */
-    final public function ajax($data = array())
-    {
+    final public function ajax($data = array()) {
         $config = Registry::getConfig();
         $messages = Registry::getMessages();
 
@@ -123,7 +116,7 @@ abstract class Controller
                 foreach ($debug['messages'] as $message) {
                     $return['debug'][] = array(
                         "message" => Helper::printDebugMessage($message['message']),
-                        "trace" => "<pre>".print_r($message['trace'], true)."</pre>",
+                        "trace" => "<pre>" . print_r($message['trace'], true) . "</pre>",
                     );
                 }
             }

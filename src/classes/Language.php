@@ -5,8 +5,7 @@
  *
  * @package LightFramework\Core
  */
-class Language
-{
+class Language {
     /**
      * All the available llangauges
      * @var array
@@ -24,8 +23,7 @@ class Language
      * Loads the default lang strings
      * It will detect any language change by URL
      */
-    public function __construct()
-    {
+    public function __construct() {
         session_start();
 
         //Get current langs
@@ -45,20 +43,19 @@ class Language
             }
         }
         if ($lang) {
-            $lang = preg_replace('/[^a-zA-Z0-9_]/','', $lang);
+            $lang = preg_replace('/[^a-zA-Z0-9_]/', '', $lang);
             $_SESSION['lang'] = $lang;
-            self::$strings = self::load("languages/".$lang.".ini");
+            self::$strings = self::load("languages/" . $lang . ".ini");
         }
     }
 
     /**
      * Loads a lang file
      *
-     * @param  string $path File path
+     * @param string $path File path
      * @return array  Translation Strings
      */
-    public function load($path)
-    {
+    public function load($path) {
         if (file_exists($path)) {
             $contents = file_get_contents($path);
             $strings = @parse_ini_string($contents);
@@ -70,11 +67,10 @@ class Language
     /**
      * Translate a string
      *
-     * @param  string $string String to translate
+     * @param string $string String to translate
      * @return string Translated string
      */
-    public static function translate($string="")
-    {
+    public static function translate($string = "") {
         $res = self::$strings[strtoupper($string)];
         if (!$res) {
             return $string;
@@ -88,8 +84,7 @@ class Language
      *
      * @return array Languages
      */
-    public function getLanguages()
-    {
+    public function getLanguages() {
         $languages = array();
         $path = "languages/";
         if (file_exists($path)) {

@@ -5,8 +5,7 @@
  *
  * @package LightFramework\Core
  */
-class Template
-{
+class Template {
     /**
      * Template name (same as folder name)
      * @var string
@@ -16,8 +15,7 @@ class Template
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         //Get the current Config
         $config = Registry::getConfig();
 
@@ -28,20 +26,19 @@ class Template
     /**
      * Try to load a View/Module
      *
-     * @param  string $file File name
-     * @param  array  $vars List of values to pass trought
+     * @param string $file File name
+     * @param array $vars List of values to pass trought
      * @return string HTML
      */
-    public static function loadTemplate($file, $vars = array())
-    {
+    public static function loadTemplate($file, $vars = array()) {
         //Check if file exists
-        $filePath = $file.'.php';
+        $filePath = $file . '.php';
         if (!file_exists($filePath)) {
             if (!strstr($file, "error.layer")) {
                 //Show error
-                Error::render("File not found: ".$filePath);
+                Error::render("File not found: " . $filePath);
             } else {
-                die("Error layer not found: ".$filePath);
+                die("Error layer not found: " . $filePath);
             }
         }
 
@@ -50,12 +47,11 @@ class Template
 
     /**
      * Load a View/Module
-     * @param  multiple $path File or files to load
-     * @param  array    $vars List of values to pass trought
+     * @param multiple $path File or files to load
+     * @param array $vars List of values to pass trought
      * @return string   HTML
      */
-    private static function loadTemplateFile($path, $vars)
-    {
+    private static function loadTemplateFile($path, $vars) {
         if (is_array($vars)) {
             extract($vars, EXTR_OVERWRITE);
         }
@@ -72,14 +68,13 @@ class Template
      * Prints the HTML string passed by param on the current Template
      *
      * @param string $layer Template layer (index.layer.php by default)
-     * @param array  $vars  List of values to pass trought
+     * @param array $vars List of values to pass trought
      */
-    public static function render($layer = "index", $vars = array())
-    {
+    public static function render($layer = "index", $vars = array()) {
         $template = Registry::getTemplate();
         $config = Registry::getConfig();
-        $path = $config->get("path").DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$template->name.
-            DIRECTORY_SEPARATOR.str_replace(".", DIRECTORY_SEPARATOR, $layer).".layer";
+        $path = $config->get("path") . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR . $template->name .
+            DIRECTORY_SEPARATOR . str_replace(".", DIRECTORY_SEPARATOR, $layer) . ".layer";
         $html = self::loadTemplate($path, $vars);
 
         //Minify?
@@ -92,22 +87,21 @@ class Template
 
     /**
      * Render an Email Template
-     * @param  string $view     Email View
-     * @param  array  $vars     List of values to pass trought
-     * @param  string $template Template to be used
+     * @param string $view Email View
+     * @param array $vars List of values to pass trought
+     * @param string $template Template to be used
      * @return string HTML
      */
-    public static function renderEmail($view, $vars = array(), $template = "")
-    {
+    public static function renderEmail($view, $vars = array(), $template = "") {
         $config = Registry::getConfig();
         $originalTemplate = "";
         if ($template) {
             $originalTemplate = $config->get("template");
             $config->set("template", $template);
         }
-        $path = $config->get("path").DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$template.DIRECTORY_SEPARATOR."emails";
-        $content = Template::loadTemplateFile($path.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.$view.".view.php", $vars);
-        $render = Template::loadTemplateFile($path.DIRECTORY_SEPARATOR."index.layer.php", array("content" => $content));
+        $path = $config->get("path") . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR . $template . DIRECTORY_SEPARATOR . "emails";
+        $content = Template::loadTemplateFile($path . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . $view . ".view.php", $vars);
+        $render = Template::loadTemplateFile($path . DIRECTORY_SEPARATOR . "index.layer.php", array("content" => $content));
         if ($template) {
             $config->set("template", $originalTemplate);
         }
@@ -117,11 +111,10 @@ class Template
 
     /**
      * Minifies HTML code
-     * @param  string $content
+     * @param string $content
      * @return string
      */
-    public static function minify($content)
-    {
+    public static function minify($content) {
         return preg_replace(
             array(
                 '/ {2,}/',

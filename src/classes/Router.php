@@ -5,13 +5,11 @@
  *
  * @package LightFramework\Core
  */
-class Router
-{
+class Router {
     /**
      * Load the correct App and launch an App Action
      */
-    public static function delegate()
-    {
+    public static function delegate() {
         //Get the current Config
         $config = Registry::getConfig();
         if ($config->get("debug")) {
@@ -28,27 +26,25 @@ class Router
     /**
      * Get the App path.
      *
-     * @param  string $appName App name
-     * @param  string $router  Router name
+     * @param string $appName App name
+     * @param string $router Router name
      * @return string
      */
-    public static function getAppPath($appName, $router = "")
-    {
+    public static function getAppPath($appName, $router = "") {
         //Get the current Config
         $config = Registry::getConfig();
 
         //Load App
-        return $config->get("path").DIRECTORY_SEPARATOR."apps".DIRECTORY_SEPARATOR.$router.DIRECTORY_SEPARATOR.$appName.DIRECTORY_SEPARATOR.$appName.".php";
+        return $config->get("path") . DIRECTORY_SEPARATOR . "apps" . DIRECTORY_SEPARATOR . $router . DIRECTORY_SEPARATOR . $appName . DIRECTORY_SEPARATOR . $appName . ".php";
     }
 
     /**
      * Route
-     * @param  string $appPath App path
-     * @param  string $action  Action
+     * @param string $appPath App path
+     * @param string $action Action
      * @return void
      */
-    private static function route($appPath, $action = "index")
-    {
+    private static function route($appPath, $action = "index") {
         //Appname
         $appName = current(explode(".", end(explode(DIRECTORY_SEPARATOR, $appPath))));
 
@@ -58,15 +54,15 @@ class Router
         //Check if the app path exists
         if (is_readable($appPath) == false) {
             //Show error
-            Error::render("App not found: ".$appPath);
+            Error::render("App not found: " . $appPath);
         } else {
 
             //Load the App
             include_once($appPath);
 
             //Check if its a Controller/Controller Router
-            $controllerClass = $appName."Controller";
-            $controllerRouterClass = $appName."ControllerRouter";
+            $controllerClass = $appName . "Controller";
+            $controllerRouterClass = $appName . "ControllerRouter";
 
             //Class exist?
             if (class_exists($controllerClass)) {
@@ -75,7 +71,7 @@ class Router
                 $class = $controllerRouterClass;
             } else {
                 //Show error
-                Error::render("Acction not found: ".$action);
+                Error::render("Acction not found: " . $action);
             }
 
             //Launch
@@ -86,13 +82,12 @@ class Router
     /**
      * Launch the controller action.
      *
-     * @param  string $class   Controller class name
-     * @param  string $appName Controller name
-     * @param  string $action  Action name
+     * @param string $class Controller class name
+     * @param string $appName Controller name
+     * @param string $action Action name
      * @return void
      */
-    public function launch($class, $appName, $action = "index")
-    {
+    public function launch($class, $appName, $action = "index") {
         //Get the current Url
         $url = Registry::getUrl();
 
@@ -110,7 +105,7 @@ class Router
 
                     //Load the App
                     $path = self::getAppPath($url->router);
-                    $router = $url->router."ControllerRouter";
+                    $router = $url->router . "ControllerRouter";
                     include_once($path);
 
                     //Init
@@ -123,7 +118,7 @@ class Router
                 //Preserve Current Debug
                 Registry::preserveDebug();
 
-            //Controller Router?
+                //Controller Router?
             } elseif (strpos($class, "ControllerRouter")) {
 
                 //New App Path
@@ -144,7 +139,7 @@ class Router
             } else {
 
                 //Show error
-                Error::render("Acction not found: ".$action);
+                Error::render("Acction not found: " . $action);
             }
         }
     }

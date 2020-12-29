@@ -5,4 +5,5 @@
  *
  * @package LightFramework\Core
  */
-abstract class ControllerRouter extends Controller {}
+abstract class ControllerRouter extends Controller {
+}
