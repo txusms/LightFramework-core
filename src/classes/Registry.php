@@ -8,8 +8,7 @@ use PHPMailer\PHPMailer\Exception;
  *
  * @package LightFramework\Core
  */
-class Registry
-{
+class Registry {
     /**
      * Current Url object
      * @var object
@@ -63,8 +62,7 @@ class Registry
      *
      * @return object Mailer
      */
-    public static function getMailer()
-    {
+    public static function getMailer() {
         $config = Registry::getConfig();
         $mailer = new PHPMailer();
 
@@ -77,7 +75,7 @@ class Registry
             $mailer->SMTPSecure = $config->get("mailSecure");
             $mailer->Username = $config->get("mailUsername");
             $mailer->Password = $config->get("mailPassword");
-        //Sendmail
+            //Sendmail
         } else {
             $mailer->isSendmail();
         }
@@ -95,8 +93,7 @@ class Registry
      *
      * @return void
      */
-    public static function preserveDebug()
-    {
+    public static function preserveDebug() {
         $_SESSION['debug'] = self::$debug;
     }
 
@@ -107,8 +104,7 @@ class Registry
      *
      * @return multiple Debug Log or Value of passed Log Key
      */
-    public static function getDebug($key = "")
-    {
+    public static function getDebug($key = "") {
         if ($key) {
             return self::$debug[$key];
         } else {
@@ -119,13 +115,12 @@ class Registry
     /**
      * Set a Debug Log object
      *
-     * @param string $key  Key
-     * @param mixed  $data Value
+     * @param string $key Key
+     * @param mixed $data Value
      *
      * @return void
      */
-    public static function setDebug($key, $data)
-    {
+    public static function setDebug($key, $data) {
         self::$debug[$key] = $data;
     }
 
@@ -134,8 +129,7 @@ class Registry
      *
      * @return object Url
      */
-    public static function getUrl()
-    {
+    public static function getUrl() {
         if (self::$url == null) {
             self::$url = new Url();
         }
@@ -148,8 +142,7 @@ class Registry
      *
      * @return object Url
      */
-    public static function setUrl($urlObject)
-    {
+    public static function setUrl($urlObject) {
         self::$url = $urlObject;
     }
 
@@ -160,8 +153,7 @@ class Registry
      *
      * @return object Url
      */
-    public static function getLanguage($lang = "")
-    {
+    public static function getLanguage($lang = "") {
         if (self::$language == null) {
             self::$language = new Language($lang);
         }
@@ -174,11 +166,10 @@ class Registry
      *
      * @return object Data Base
      */
-    public static function getDb()
-    {
+    public static function getDb() {
         $config = self::getConfig();
         if (self::$db == null) {
-            self::$db = new Database($config->get("dbHost"), $config->get("dbUser"), $config->get("dbPass"), $config->get("dbName"));
+            self::$db = new Database($config->get("dbHost"), $config->get("dbUser"), $config->get("dbPass"), $config->get("dbName"), $config->get("dbCharset"));
         }
 
         return self::$db;
@@ -189,8 +180,7 @@ class Registry
      *
      * @return object User
      */
-    public static function getUser()
-    {
+    public static function getUser() {
         if (self::$user == null || !self::$user->id) {
             $config = Registry::getConfig();
             $user = null;
@@ -198,7 +188,7 @@ class Registry
             session_start();
             if (isset($_SESSION["userId"])) {
                 $user = new User($_SESSION["userId"]);
-            //Cookie
+                //Cookie
             } elseif (isset($_COOKIE[$config->get("cookie")])) {
                 $user = @current(User::getBy("token", $_COOKIE[$config->get("cookie")]));
             }
@@ -215,8 +205,7 @@ class Registry
      *
      * @return object Config
      */
-    public static function getConfig()
-    {
+    public static function getConfig() {
         if (self::$config == null) {
             global $_config;
             self::$config = new Config($_config);
@@ -230,8 +219,7 @@ class Registry
      *
      * @return object Template
      */
-    public static function getTemplate()
-    {
+    public static function getTemplate() {
         if (self::$template == null) {
             self::$template = new Template();
         }
@@ -242,15 +230,14 @@ class Registry
     /**
      * Add a message on the current session
      *
-     * @param string  $message Message itself
-     * @param integer $type    Type of message
-     * @param string  $field   Related Form field
-     * @param string  $url     Url to redirect
+     * @param string $message Message itself
+     * @param integer $type Type of message
+     * @param string $field Related Form field
+     * @param string $url Url to redirect
      *
      * @return bool
      */
-    public static function addMessage($message = "", $type = 1, $field = "", $url = "")
-    {
+    public static function addMessage($message = "", $type = 1, $field = "", $url = "") {
         if (php_sapi_name() != 'cli') {
             session_start();
         }
@@ -268,8 +255,7 @@ class Registry
      *
      * @return array List of Message objects
      */
-    public static function getMessages($keep = false)
-    {
+    public static function getMessages($keep = false) {
         if (php_sapi_name() != 'cli') {
             session_start();
         }
